@@ -1,4 +1,6 @@
 import { JSON } from "..";
+import { Message } from "./extras";
+
 function canSerde<T>(data: T, toBe: string = ""): void {
   if (!toBe) toBe = JSON.stringify<T>(data);
   const deserialized = JSON.stringify<T>(JSON.parse<T>(JSON.stringify(data)));
@@ -212,6 +214,13 @@ describe("Ser/de Objects", () => {
       '{"fa":[1E21,1E22,1E-7,1E-8,1E-9]}',
       { fa: [1e21,1e22,1e-7,1e-8,1e-9] });
 
+  });
+
+  it("should ser/de imported objects", () => {
+    // Class Message is defined and exported in another file, and imported here.
+    canSerde<Message>({
+      text: "hello",
+    });
   });
 });
 
